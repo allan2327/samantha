@@ -4,7 +4,7 @@ from collections import namedtuple
 EvaluatedModule = namedtuple('EvaluatedModule', ['score', 'module'])
 
 
-class Brain:
+class Brain(object):
     
     def __init__(self, listener=None, speaker=None, modules=None):
         self.listener = listener

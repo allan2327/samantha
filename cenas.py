@@ -3,16 +3,16 @@ import textblob
 from textblob import TextBlob
 
 
-def penn_to_wn(tag):
-    if tag in ['JJ', 'JJR', 'JJS']: # is adjective
-        return 'a'
-    elif tag in ['NN', 'NNS', 'NNP', 'NNPS']: # is noun
-        return 'n'
-    elif tag in ['RB', 'RBR', 'RBS']: # adverb
-        return 'r'
-    elif tag in ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']: # is verb
-        return 'v'
-    return None
+#def penn_to_wn(tag):
+#    if tag in ['JJ', 'JJR', 'JJS']: # is adjective
+#        return 'a'
+#    elif tag in ['NN', 'NNS', 'NNP', 'NNPS']: # is noun
+#        return 'n'
+#    elif tag in ['RB', 'RBR', 'RBS']: # adverb
+#        return 'r'
+#    elif tag in ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']: # is verb
+#        return 'v'
+#    return None
 
 
 
@@ -20,15 +20,15 @@ def penn_to_wn(tag):
 
 s = "Sometimes I can't' see crows buzzing around the tree trunks in my iron-clad yellowed pajamas and boots. Don't' fish a fish."
 
-a = TextBlob(s)
+#a = TextBlob(s)
 
-print("### tokenized")
-print(a.words)
-print()
+#print("### tokenized")
+#print(a.words)
+#print()
 
-print("### POS-tagged")
-print(a.tags)
-print()
+#print("### POS-tagged")
+#print(a.tags)
+#print()
 
 
 # print("### lemmatized")
@@ -51,7 +51,41 @@ print()
 # print(a.noun_phrases)
 # print()
 
-print("### Parse")
-for x in a.parse().split(' '):
-    print(x.split('/'))
-print()
+#print("### Parse")
+#for x in a.parse().split(' '):
+#    print(x.split('/'))
+#print()
+
+
+from samantha.nlputils import TextBlobExtended
+
+a = TextBlobExtended("I don't like to play on the beach, water or mountain.")
+
+
+for x in a.words:
+    print(x, x.pos_tag)
+print('')
+
+for x in a.tokens:
+    print(x, x.pos_tag)
+print('')
+
+for x in a.pos_tags:
+    print(x[0], x[0].pos_tag, x[1])
+print('')
+
+#for x in a.pos_tags_with_punctuation:
+#    print(x)
+#print('')
+
+
+
+
+
+    
+
+    
+    
+    
+    
+    
