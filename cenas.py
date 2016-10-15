@@ -124,7 +124,7 @@ print(b)
 print('')
 print(find_prepositions(find_chunks(b)))
 print('')
-print(a.parse().replace(' ', '\n'))
+print(a.parse().split(' '))
 
 # for i, j in zip(a.parse().split(' '), find_prepositions(find_chunks(b))):
 #     print(i.split('/'), '   ', j)
