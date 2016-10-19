@@ -1,7 +1,8 @@
 
 import abc
 
-class ModuleBase(abc.ABC):
+class ModuleBase(object):
+    __metaclass__ = abc.ABCMeta
     
     @abc.abstractmethod
     def evaluate(self, preprocessed_sentence):
@@ -16,14 +17,16 @@ class ModuleBase(abc.ABC):
         pass
 
 
-class SpeakerBase(abc.ABC):
+class SpeakerBase(object):
+    __metaclass__ = abc.ABCMeta
     
     @abc.abstractmethod
     def speak(self):
         pass
 
 
-class ListenerBase(abc.ABC):
+class ListenerBase(object):
+    __metaclass__ = abc.ABCMeta
     
     @abc.abstractmethod
     def listen(self):

@@ -1,6 +1,9 @@
 
 from samantha.baseclasses import ListenerBase, SpeakerBase
 
+## hack for python 2
+input = raw_input
+
 class CommandLineListenerSpeaker(ListenerBase, SpeakerBase):
     
     def listen(self):
