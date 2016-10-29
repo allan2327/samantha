@@ -1,55 +1,97 @@
 
-from collections import namedtuple
+from collections import namedtuple, defaultdict
+import sys
+import spacy
 
-EvaluatedModule = namedtuple('EvaluatedModule', ['score', 'module'])
+
+EvaluatedModule = namedtuple('EvaluatedModule', ['score', 'module', 'action'])
 
 
 class Brain(object):
     
+
     def __init__(self, listener=None, speaker=None, modules=None):
+        print("Starting")
         self.listener = listener
         self.speaker = speaker
         self.modules = modules or []
-        self.in_context_module = None
-        print("Starting")
+        self.last_module = None
+        self.context = defaultdict(self.none_f)
+        print("Loading NLP modules...")
+        self.parser = spacy.load("en")
+        print("NLP modules loaded.")
+
+        
+    @staticmethod
+    def none_f():
+        return None
+        
 
     def _preprocess_sentence(self, sentence):
-        return sentence
+        if sys.version_info[0] < 3:
+            sentence = unicode(sentence, "utf-8")
+        preprocessed_sentence = self.parser(sentence)
+        print(self._get_printable_sentence_tree(preprocessed_sentence))
+        return preprocessed_sentence
 
+        
     def _select_module(self, preprocessed_sentence):
         evaluated_modules = []
         for module in self.modules:
-            score = module.evaluate(preprocessed_sentence)
-            evaluated_modules.append(EvaluatedModule(score, module))
-        
-        if self.in_context_module:
-            score = self.in_context_module.evaluate_with_context(preprocessed_sentence)
-            evaluated_modules.append(EvaluatedModule(score*2, self.in_context_module)) # TODO magic number
-        
+            if module == self.last_module:
+                score, action = module.evaluate_with_context(preprocessed_sentence, self.context[module.name])
+                score = score * 2   # TODO magic number
+            else:
+                score, action = module.evaluate(preprocessed_sentence, self.context[module.name])
+            evaluated_modules.append(EvaluatedModule(score, module, action))
+            
         evaluated_modules.sort(key=lambda x: x.score)
-        evaluated_modules.reverse()
-        selected_module = evaluated_modules[0]
-        return selected_module.module, selected_module.score
+        selected_module = evaluated_modules[-1]
+        return selected_module.score, selected_module.module, selected_module.action
+        
+        
+    def _act(self, module, action):
+        module_name = module.name
+        if module != self.last_module:
+            self.context = defaultdict(self.none_f)
+            self.context[module_name] = {}
+        response, self.context[module_name] = action(self.context[module_name])
+        self.last_module = module
+        return response
 
-    def _act(self, module, preprocess_sentence):
-        response = module.act(preprocess_sentence)
-        if response:
-            speaker.say(response)
+            
+    def _get_printable_sentence_tree(self, doc):
+        def get_depth(t, depth=0):
+            result = {}
+            result[t.idx] = depth
+            for c in t.children:
+                result.update(get_depth(c, depth+1))
+            return result
 
+        for root in doc:
+            if root.dep_ == "ROOT":
+                break
+
+        depths = get_depth(root)
+        s = ''
+        for t in doc:
+            s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.pos_, t.tag_, t.dep_)) + '\n'
+        return s
+            
+            
     def run(self):
         while True:
             sentence = self.listener.listen()
             preprocessed_sentence = self._preprocess_sentence(sentence)
-            module, score = self._select_module(preprocessed_sentence)
+            score, module, action = self._select_module(preprocessed_sentence)
             
-            if score < 0.4: # TODO magic number
+            if not action or score < 0.4: # TODO magic number
                 self.speaker.speak("Sorry, I don't understand what you mean.")
                 continue
-            
-            self.in_context_module = module
-            response = module.act(preprocessed_sentence)
+
+            response = self._act(module, action)
             if response:
                 self.speaker.speak(response)
-            
 
-        
+
+    

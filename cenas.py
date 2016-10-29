@@ -4,7 +4,7 @@ import spacy
 
 parser = spacy.load('en')
 
-doc = parser("There are bananas on the table")
+doc = parser(u"There are bananas on the table")
 
 def print_sentence_tree(doc):
     def get_depth(t, depth=0):
@@ -20,23 +20,23 @@ def print_sentence_tree(doc):
 
     depths = get_depth(root)
     for t in doc:
-        print('   ' * depths[t.idx], t.orth_, t.tag_, t.pos_, t.dep_)
+        print(' '.join(('   ' * depths[t.idx], t.orth_, t.lemma_, t.pos_, t.tag_, t.dep_)))
 
 
 print_sentence_tree(doc)
 print('')
 
 ss = [
-    "What day is it?",
-    "How many time until eight?",
-    "What day of the week is it?",
-    "What day of the week is December fifth?",
-    "When is the next holiday?",
-    "What day of the week was twenty fourth of April nineteen eighty six?",
-    "What time is it?",
-    "What is the time?",
-    "What day is it?",
-    "What is the day?"
+    u"What day is it?",
+    u"How many time until eight?",
+    u"What day of the week is it?",
+    u"What day of the week is December fifth?",
+    u"When is the next holiday?",
+    u"What day of the week was twenty fourth of April nineteen eighty six?",
+    u"What time is it?",
+    u"What is the time?",
+    u"What day is it?",
+    u"What is the day?"
 ]
 
 for s in ss:
@@ -46,12 +46,12 @@ for s in ss:
 
 
 def get_action(token, rule):
-    for rule_child for rule.children:
+    for rule_child in rule.children:
         result = rule_child.evaluate(token)
         if result.action:
             return result
 
-def evaluate_rule(rule, token);
+def evaluate_rule(rule, token):
     result = rule.evaluate(token)
     if result:
         return result

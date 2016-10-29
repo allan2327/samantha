@@ -1,39 +1,49 @@
 
+from functools import partial
 from samantha.baseclasses import ModuleBase
 
 class Ping(ModuleBase):
 
-    def __init__(self):
-        self.context = None
-
-    def evaluate(self, preprocessed_sentence):
-        if "ping" in preprocessed_sentence:
-            return 1.0
-        return 0.0
-
-    def evaluate_with_context(self, preprocessed_sentence):
-        if "pong" in preprocessed_sentence or "ping" in preprocessed_sentence:
-            return 1.0
-        return 0.0
-
-    def act(self, preprocessed_sentence):
-        keyword = None
-        if "ping" in preprocessed_sentence:
-            keyword = "ping"
-        elif "pong" in preprocessed_sentence:
-            keyword = "pong"
+    def evaluate(self, preprocessed_sentence, context):
+        root = preprocessed_sentence.sents.next().root
         
-        if self.context:
-            if self.context == keyword:
-                self.context = None
-                return "That not what you should say."
+        if root.orth_ not in ["ping", "pong"]:
+            return 0.0, None
+        
+        action = 0
+        if context: # has context, not first use
+            if root.orth_ == context["last word"]:
+                if root.orth_ == "ping":
+                    action = self.pong
+                else:
+                    action = self.ping
             else:
-                self.context = keyword
-                return "ping" if keyword == "pong" else "pong"
+                action = self.bad_word
         else:
-            if keyword != "ping":
-                return "That's not who you start this."
+            if root.orth_ == "ping":
+                action = self.pong
             else:
-                self.context = keyword
-                return "pong"
+                action = self.bad_start
+        return 1.0, action
+                
         
+    def evaluate_with_context(self, preprocessed_sentence, context):
+        return self.evaluate(preprocessed_sentence, context)
+
+    
+    def ping(self, context):
+        context["last word"] = "ping"
+        return "ping", context
+    
+    
+    def pong(self, context):
+        context["last word"] = "pong"
+        return "pong", context
+    
+    
+    def bad_start(self, context):
+        return "That's not how you start this.", {}
+    
+    
+    def bad_word(self, context):
+        return "That not what you should say.", {}    # resets context
