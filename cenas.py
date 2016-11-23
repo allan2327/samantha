@@ -44,16 +44,3 @@ for s in ss:
     print_sentence_tree(parser(s))
     print('')
 
-
-def get_action(token, rule):
-    for rule_child in rule.children:
-        result = rule_child.evaluate(token)
-        if result.action:
-            return result
-
-def evaluate_rule(rule, token):
-    result = rule.evaluate(token)
-    if result:
-        return result
-    for child_rule in rule.children:
-        evaluate_rule(child_rule, token)

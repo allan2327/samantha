@@ -1,8 +1,10 @@
 
+import sys
 from samantha.baseclasses import ListenerBase, SpeakerBase
 
 ## hack for python 2
-input = raw_input
+if sys.version_info[0] < 3:
+    input = raw_input
 
 class CommandLineListenerSpeaker(ListenerBase, SpeakerBase):
     

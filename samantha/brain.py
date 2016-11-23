@@ -9,7 +9,6 @@ EvaluatedModule = namedtuple('EvaluatedModule', ['score', 'module', 'action'])
 
 class Brain(object):
     
-
     def __init__(self, listener=None, speaker=None, modules=None):
         print("Starting")
         self.listener = listener
@@ -77,8 +76,7 @@ class Brain(object):
         for t in doc:
             s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.pos_, t.tag_, t.dep_)) + '\n'
         return s
-            
-            
+
     def run(self):
         while True:
             sentence = self.listener.listen()

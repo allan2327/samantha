@@ -9,7 +9,7 @@ class Administration(ModuleBase):
         if len(preprocessed_sentence) > 1:
             return 0.0, None
         
-        root = preprocessed_sentence.sents.next().root
+        root = next(preprocessed_sentence.sents).root
         if root.orth_ == "shutdown":
             return 1.0, self.shutdown
         return 0.0, None

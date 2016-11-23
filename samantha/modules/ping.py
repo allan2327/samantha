@@ -5,7 +5,7 @@ from samantha.baseclasses import ModuleBase
 class Ping(ModuleBase):
 
     def evaluate(self, preprocessed_sentence, context):
-        root = preprocessed_sentence.sents.next().root
+        root = next(preprocessed_sentence.sents).root
         
         if root.orth_ not in ["ping", "pong"]:
             return 0.0, None
