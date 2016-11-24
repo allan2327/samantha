@@ -8,10 +8,18 @@ from samantha.modules.timeanddate import TimeAndDate
 
 ping = Ping()
 admin = Administration()
-cmd = CommandLineListenerSpeaker()
-time_and_date = TimeAndDate()
-brain = Brain(cmd, cmd, [ping, admin, time_and_date])
 
-brain.run()
+time_and_date = TimeAndDate()
+brain = Brain( [ping, admin, time_and_date])
+
+while True:
+    text = input("(You): ")
+    text = text.strip()
+    if not text:
+        continue
+    response, context = brain.handle(text, {})
+    print('(Samantha): {}'.format(response))
+    print(context)
+    print('')
 
 

@@ -9,10 +9,8 @@ EvaluatedModule = namedtuple('EvaluatedModule', ['score', 'module', 'action'])
 
 class Brain(object):
     
-    def __init__(self, listener=None, speaker=None, modules=None):
+    def __init__(self, modules=None):
         print("Starting")
-        self.listener = listener
-        self.speaker = speaker
         self.modules = modules or []
         self.last_module = None
         self.context = defaultdict(self.none_f)
@@ -56,7 +54,7 @@ class Brain(object):
             self.context[module_name] = {}
         response, self.context[module_name] = action(self.context[module_name])
         self.last_module = module
-        return response
+        return response, self.context
 
             
     def _get_printable_sentence_tree(self, doc):
@@ -77,19 +75,14 @@ class Brain(object):
             s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.pos_, t.tag_, t.dep_)) + '\n'
         return s
 
-    def run(self):
-        while True:
-            sentence = self.listener.listen()
-            preprocessed_sentence = self._preprocess_sentence(sentence)
-            score, module, action = self._select_module(preprocessed_sentence)
-            
-            if not action or score < 0.4: # TODO magic number
-                self.speaker.speak("Sorry, I don't understand what you mean.")
-                continue
+    def handle(self, sentence, context):
+        preprocessed_sentence = self._preprocess_sentence(sentence)
+        score, module, action = self._select_module(preprocessed_sentence)
+        
+        if not action or score < 0.4: # TODO magic number
+            return "Sorry, I don't understand what you mean.", context
+        return self._act(module, action)
 
-            response = self._act(module, action)
-            if response:
-                self.speaker.speak(response)
 
 
     
