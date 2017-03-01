@@ -28,7 +28,10 @@ class Brain(object):
         if sys.version_info[0] < 3:
             sentence = unicode(sentence, "utf-8")
         preprocessed_sentence = self.parser(sentence)
+        # debug
+        print()
         print(self._get_printable_sentence_tree(preprocessed_sentence))
+        # debug end
         return preprocessed_sentence
 
         
@@ -72,7 +75,7 @@ class Brain(object):
         depths = get_depth(root)
         s = ''
         for t in doc:
-            s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.pos_, t.tag_, t.dep_)) + '\n'
+            s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.lemma_, t.pos_, t.tag_, t.dep_)) + '\n'
         return s
 
     def handle(self, sentence, context):

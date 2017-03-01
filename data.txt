@@ -1,0 +1,94 @@
+
+
+# What is the time.
+
+    What what NOUN WP attr
+ is be VERB VBZ ROOT
+       the the DET DT det
+    time time NOUN NN nsubj
+    . . PUNCT . punct
+    
+    
+# What time is it.
+
+       What what ADJ WDT det
+    time time NOUN NN attr
+ is be VERB VBZ ROOT
+    it it PRON PRP nsubj
+    . . PUNCT . punct
+
+    
+# Can you tell me the time.
+
+    Can can VERB MD aux
+    you you PRON PRP nsubj
+ tell tell VERB VB ROOT
+    me me PRON PRP dative
+       the the DET DT det
+    time time NOUN NN dobj
+    . . PUNCT . punct
+    
+
+# Tell me the time.
+
+ Tell tell VERB VB ROOT
+    me me PRON PRP dative
+       the the DET DT det
+    time time NOUN NN dobj
+    . . PUNCT . punct
+
+------------------------------
+
+# What is the date.
+
+    What NOUN WP attr
+ is VERB VBZ ROOT
+       the DET DT det
+    date NOUN NN attr
+    . PUNCT . punct
+
+
+
+------------------------------
+
+# What is the day of the week.
+
+    What NOUN WP attr
+ is VERB VBZ ROOT
+       the DET DT det
+    day NOUN NN attr
+       of ADP IN prep
+             the DET DT det
+          week NOUN NN pobj
+    . PUNCT . punct
+
+# What day of the week is it.
+
+       What ADJ WDT det
+    day NOUN NN attr
+       of ADP IN prep
+             the DET DT det
+          week NOUN NN pobj
+ is VERB VBZ ROOT
+    it PRON PRP nsubj
+    . PUNCT . punct
+    
+
+
+------------------------------
+
+# What is the month.
+
+    What NOUN WP attr
+ is VERB VBZ ROOT
+       the DET DT det
+    month NOUN NN nsubj
+    . PUNCT . punct
+
+# What month is it.
+
+       What NOUN WP det
+    month NOUN NN attr
+ is VERB VBZ ROOT
+    it PRON PRP nsubj
+    . PUNCT . punct
