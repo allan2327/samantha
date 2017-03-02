@@ -1,22 +1,24 @@
 
-from functools import partial
-from samantha.baseclasses import ModuleBase
 import sys
+from functools import partial
+
+from samantha.baseclasses import ModuleBase
+
 
 class Administration(ModuleBase):
 
     def evaluate(self, preprocessed_sentence, context):
-        if len(preprocessed_sentence) > 1:
-            return 0.0, None
-        
-        root = next(preprocessed_sentence.sents).root
-        if root.orth_ == "shutdown":
-            return 1.0, self.shutdown
+        rules = self.grammar.find_matching_rules(preprocessed_sentence)
+        if rules:
+            return 1.0, rules[0].action
         return 0.0, None
 
     def evaluate_with_context(self, preprocessed_sentence, context):
         return self.evaluate(preprocessed_sentence, context)
+        
+    def execute(self, action, context, data):
+        method = getattr(self, '_' + action)
+        return method(context, data)
 
-            
-    def shutdown(self, context):
+    def _shutdown(self, context, data):
         sys.exit()

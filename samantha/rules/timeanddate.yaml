@@ -1,0 +1,77 @@
+
+words:
+    what_q:
+        lemma: what
+        
+    be_root:
+        lemma: be
+        pos: VERB
+        dep: ROOT 
+        
+    be_short_root: 
+        lemma:  "'"  
+        pos: VERB
+        det: ROOT   
+        
+    tell_root: 
+        lemma: tell  
+        pos: VERB  
+        dep: ROOT    
+        
+    pronoun: 
+        pos: PRON   
+        
+    time_noun: 
+        lemma: time  
+        pos: NOUN    
+        
+    date_noun: 
+        lemma: date  
+        pos: NOUN 
+        
+    the_det:  
+        lemma: the  
+        pos: DET 
+        
+    it_pron:  
+        lemma: it  
+        pos: PRON 
+        
+
+rules: 
+    time_1: 
+        action: get_time  
+        left:
+            - what_q 
+        root: be_root  
+        right:
+            -  the_det
+            -  time_noun
+            
+    time_2: 
+        action: get_time  
+        left:
+            - what_q
+            - time_noun
+        root: be_root  
+        right:
+            - it_pron
+            
+    time_3: 
+        action: get_time  
+        #left: null
+        root: tell_root  
+        right:
+            - pronoun
+            - the_det
+            - time_noun
+            
+    date_1: 
+        action: get_date  
+        left:
+            - what_q
+        root: be_root  
+        right:
+            - the_det
+            - date_noun
+       

@@ -1,0 +1,13 @@
+
+words:
+    shutdown_root:
+        lemma: shutdown
+        dep: ROOT
+        
+rules:
+    shutdown:
+        action: shutdown
+        #left: null
+        root: shutdown_root
+        #right: null
+        

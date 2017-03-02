@@ -38,11 +38,9 @@ class Brain(object):
     def _select_module(self, preprocessed_sentence):
         evaluated_modules = []
         for module in self.modules:
+            score, action = module.evaluate(preprocessed_sentence, self.context[module.name])
             if module == self.last_module:
-                score, action = module.evaluate_with_context(preprocessed_sentence, self.context[module.name])
                 score = score * 2   # TODO magic number
-            else:
-                score, action = module.evaluate(preprocessed_sentence, self.context[module.name])
             evaluated_modules.append(EvaluatedModule(score, module, action))
             
         evaluated_modules.sort(key=lambda x: x.score)
@@ -55,7 +53,8 @@ class Brain(object):
         if module != self.last_module:
             self.context = defaultdict(self.none_f)
             self.context[module_name] = {}
-        response, self.context[module_name] = action(self.context[module_name])
+        #response, self.context[module_name] = action(self.context[module_name])
+        response, self.context[module_name] = module.execute(action, self.context[module_name], None)
         self.last_module = module
         return response, self.context
 

@@ -1,0 +1,22 @@
+
+words:
+    ping_root:
+        lemma: ping
+        dep: ROOT
+    
+    pong_root:
+        lemma: pong
+        dep: ROOT
+        
+rules:
+    ping:
+        action: ping
+        #left: null
+        root: ping_root
+        #right: null
+    
+    pong:
+        action: pong
+        #left: null
+        root: pong_root
+        #right: null
