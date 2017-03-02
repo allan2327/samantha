@@ -4,6 +4,7 @@ from collections import namedtuple
 
 from attr import attrs, attrib
 import spacy
+import yaml
 
 parser = spacy.load('en')
 
@@ -125,8 +126,11 @@ def process_rules(data):
 with open('rules.json', 'r') as input:
     data = json.load(input)
 
+with open('rules.yaml', 'r') as input:
+    ydata = yaml.load(input)
+
 g = process_rules(data)
-    
+g = process_rules(ydata)
 
 doc = parser('I tell the ball how time flows like the dates')
 

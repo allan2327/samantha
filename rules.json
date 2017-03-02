@@ -1,6 +1,3 @@
-
-
-
 {
     "words": {
         "what_q": {
@@ -8,10 +5,17 @@
         },
         "be_root": {
             "lemma": "be",
+            "pos": "VERB",
             "dep": "ROOT"
+        },
+        "be_short_root": {
+            "lemma": "'",
+            "pos": "VERB",
+            "det": "ROOT"
         },
         "tell_root": {
             "lemma": "tell",
+            "pos": "VERB",
             "dep": "ROOT"
         },
         "pronoun": {
