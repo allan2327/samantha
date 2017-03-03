@@ -1,6 +1,5 @@
 
 from collections import namedtuple, defaultdict
-import sys
 import spacy
 
 
@@ -13,7 +12,7 @@ class Brain(object):
         print("Starting")
         self.modules = modules or []
         self.last_module = None
-        self.context = defaultdict(self.none_f)
+        self.context = defaultdict(dict)
         print("Loading NLP modules...")
         self.parser = spacy.load("en")
         print("NLP modules loaded.")
@@ -25,8 +24,6 @@ class Brain(object):
         
 
     def _preprocess_sentence(self, sentence):
-        if sys.version_info[0] < 3:
-            sentence = unicode(sentence, "utf-8")
         preprocessed_sentence = self.parser(sentence)
         # debug
         print()
@@ -50,10 +47,10 @@ class Brain(object):
         
     def _act(self, module, action):
         module_name = module.name
+        print(self.last_module)
         if module != self.last_module:
-            self.context = defaultdict(self.none_f)
-            self.context[module_name] = {}
-        #response, self.context[module_name] = action(self.context[module_name])
+            if self.last_module:
+                self.context.pop(self.last_module.name, None)    # delete entry
         response, self.context[module_name] = module.execute(action, self.context[module_name], None)
         self.last_module = module
         return response, self.context
@@ -66,23 +63,21 @@ class Brain(object):
             for c in t.children:
                 result.update(get_depth(c, depth+1))
             return result
-
         for root in doc:
             if root.dep_ == "ROOT":
                 break
-
         depths = get_depth(root)
         s = ''
         for t in doc:
             s = s + ' '.join(('   ' * depths[t.idx], t.orth_, t.lemma_, t.pos_, t.tag_, t.dep_)) + '\n'
         return s
 
-    def handle(self, sentence, context):
+    def handle(self, sentence):
         preprocessed_sentence = self._preprocess_sentence(sentence)
         score, module, action = self._select_module(preprocessed_sentence)
         
         if not action or score < 0.4: # TODO magic number
-            return "Sorry, I don't understand what you mean.", context
+            return "Sorry, I don't understand what you mean.", self.context
         return self._act(module, action)
 
 

@@ -25,7 +25,7 @@ while True:
     text = text.strip()
     if not text:
         continue
-    response, context = brain.handle(text, {})
+    response, context = brain.handle(text)
     print('(Samantha): {}'.format(response))
     print(context)
     print('')
