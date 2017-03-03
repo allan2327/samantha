@@ -8,3 +8,8 @@
 - 
 
 
+https://humanfriendly.readthedocs.io/en/latest/
+http://stackoverflow.com/questions/262264/i-need-a-mapping-list-of-cities-to-timezones-best-way-to-get-it
+http://download.geonames.org/export/dump/
+
+
